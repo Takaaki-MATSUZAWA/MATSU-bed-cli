@@ -9,6 +9,7 @@ setup(
     author='TAKAKI MATSUZAWA',
     author_email='takaaki0112@gmail.com',
     packages=["matsubed"],
+    install_requires=['mbed-cli'],
     entry_points={
         'console_scripts': [
             'matsubed=matsubed.matsubed:main',
