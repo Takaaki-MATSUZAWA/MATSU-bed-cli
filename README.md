@@ -19,75 +19,69 @@ pipが入っていればMATSU-bed-cliを入れる時にmbed-cliも一緒に入�
 ```
 
 ## 動作確認
-コマンドプロンプトで
 ```
 > matsubed --version
 0.1.0
 ```
 
 ## 環境構築
-適当な場所にworkspaceを作る
+適当な場所にworkspaceを作ってその中でinitコマンドを実行
 ```
 > mkdir matsubed-workspace
 > cd matsubed-workspace
-> matsubed init
+
+matsubed-workspace> matsubed init
 ```
 mbedのライブラリをまるごと落としてくるので結構時間がかかる
 
 ## 使い方
 ### 新しいプロジェクトの作成
-例えばLED_blinkというプロジェクトを作る。
+workspaceでnewコマンドを実行
 
-workspaceで
+例えばLED_blinkというプロジェクトを作る場合
 ```
-> matsubed new LED_blink
-> cd LED_blink
-> matsubed compile
+matsubed-workspace> matsubed new LED_blink
 ```
 
 ### mbed.orgからインポート
 例えばMATSU-bed_blinkyをインポートする
-
-workspaceで
 ```
-> matsubed import https://developer.mbed.org/users/hardtail/code/MATSU-bed_blinky/
-> cd MATSU-bed_blinky
-> matsubed compile
+matsubed-workspace> matsubed import https://developer.mbed.org/users/hardtail/code/MATSU-bed_blinky/
 ```
 
 ### ライブラリの追加
-例えばMPU6050のDMP用のライブラリを落としてくる
+例えばLED_blinkにMPU6050のDMP用のライブラリを追加する
 
 #### オンラインから追加
-ライブラリをインポートしたいプロジェクトの中で
+ライブラリをインポートしたいプロジェクトの中でaddコマンドを実行
 ```
-> matsubed add https://os.mbed.com/users/hardtail/code/MPU6050_DMP_test_for1549/
+matsubed-workspace\LED_blink> matsubed add https://os.mbed.com/users/hardtail/code/MPU6050_DMP_test_for1549/
 
 ```
 
 #### 既にダウンロードしたライブラリを確認
 一度ダウンロードしたライブラリはlibraryフォルダに入ってる
-以下のコマンドで確認できる
+
+libraryのコマンドで確認できる
 ```
 > matsubed library
 
 List of libraries being downloaded
    mbed
    MPU6050-DMP
-   pwm_all_out
    USBDevice
 ```
 
 #### 既にlibraryフォルダにあるライブラリを追加
-ライブラリをインポートしたいプロジェクトの中で
+一度ダウンロードしていればライブラリ名だけで追加できる
 ```
-> matsubed add MPU6050-DMP
+matsubed-workspace\LED_blink> matsubed add MPU6050-DMP
 ```
 
 ### コンパイル
-コンパイルしたいプロジェクトの中で
+コンパイルしたいプロジェクトのフォルダのなかでcompileコマンドを実行
 ```
-> matsubed compile
+matsubed-workspace\LED_blink> matsubed compile
 
 ..
 +----------------------------------------------------------------------+-------+-------+------+
@@ -120,15 +114,16 @@ List of libraries being downloaded
 Total Static RAM memory (data + bss): 4864 bytes
 Total Flash memory (text + data): 21421 bytes
 
-Image: .\BUILD\LPC1549\GCC_ARM\library.bin
+Image: .\BUILD\LPC1549\GCC_ARM\LED_blink.bin
 ```
 最後にこんな感じのが出ればコンパイル成功
 
 ### MATSU-bedへの書き込み
-MATSU-bedをUSB-ISPモードでPCに接続してから
-書き込みたいプロジェクトの中で
+MATSU-bedをUSB-ISPモードでPCに接続する
+
+書き込みたいプロジェクトの中でflashコマンドを実行
 ```
-> matsubed flash
+matsubed-workspace\LED_blink> matsubed flash
 
 Success firmware update !!!
 ```
