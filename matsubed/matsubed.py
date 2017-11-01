@@ -159,6 +159,9 @@ def add(url_or_libName):
 
         os.system("mklink /D " + libName + " " + LIBRARY_DIR_PATH + libName)
 
+        ## .libファイルをコピー
+        shutil.copy(LIBRARY_DIR_PATH + libName+".lib","." )
+
     else:
         libName = url_or_libName
 
@@ -169,6 +172,7 @@ def add(url_or_libName):
         if libName in library_list:
             print "mbed library ["+libName +"] was imported from library Directory in workspace"
             os.system("mklink /D " + libName + " " + LIBRARY_DIR_PATH + libName)
+            shutil.copy(LIBRARY_DIR_PATH + libName+".lib","." )
         else:
             print "mbed library ["+libName +"] is not found"
             print "Please import using web URL"
