@@ -35,7 +35,13 @@ matsubed-workspace> matsubed init
 mbedのライブラリをまるごと落としてくるので結構時間がかかる
 
 ## 使い方
-### 新しいプロジェクトの作成
+1. プロジェクト作成or追加
+2. ライブラリの追加
+3. コンパイル
+4. MATSU-bedへの書き込み
+### **1. プロジェクトの作成or追加**
+プロジェクトはnewコマンドを使って作成する方法と、mbed.orgからインポートする方法がある。
+#### 新しいプロジェクトの作成
 workspaceでnewコマンドを実行
 
 例えばLED_blinkというプロジェクトを作る場合
@@ -43,42 +49,52 @@ workspaceでnewコマンドを実行
 matsubed-workspace> matsubed new LED_blink
 ```
 
-### mbed.orgからインポート
+#### mbed.orgからインポート
 例えばMATSU-bed_blinkyをインポートする
 ```
 matsubed-workspace> matsubed import https://developer.mbed.org/users/hardtail/code/MATSU-bed_blinky/
 ```
 
-### ライブラリの追加
-例えばLED_blinkにMPU6050のDMP用のライブラリを追加する
+### **2. ライブラリの追加**
+コンパイルに必要なライブラリを追加する。
+
+オンラインから追加する方法と、すでにダウンロードしたライブラリから追加する方法がある。
 
 #### オンラインから追加
+例えばLED_blinkにMPU6050のDMP用のライブラリを追加する
+
 ライブラリをインポートしたいプロジェクトの中でaddコマンドを実行
 ```
 matsubed-workspace\LED_blink> matsubed add https://os.mbed.com/users/hardtail/code/MPU6050_DMP_test_for1549/
 
 ```
 
-#### 既にダウンロードしたライブラリを確認
+#### 既にlibraryフォルダにあるライブラリを追加
 一度ダウンロードしたライブラリはlibraryフォルダに入ってる
 
-libraryのコマンドで確認できる
+libraryのコマンドで確認
 ```
 > matsubed library
 
 List of libraries being downloaded
    mbed
    MPU6050-DMP
-   USBDevice
+   USBD
 ```
+この場合は、ライブラリ名だけで追加できる
 
-#### 既にlibraryフォルダにあるライブラリを追加
-一度ダウンロードしていればライブラリ名だけで追加できる
+addコマンドで追加
 ```
 matsubed-workspace\LED_blink> matsubed add MPU6050-DMP
 ```
 
-### コンパイル
+上記のコマンドがうまくいかない場合:
+ - 管理者権限でコマンドプロンプトを開き、addコマンドを実行しなおす
+
+ または
+ - libraryフォルダから必要なライブラリを、プロジェクトフォルダ内にコピーして「3.コンパイル」に進む。
+
+### **3. コンパイル**
 コンパイルしたいプロジェクトのフォルダのなかでcompileコマンドを実行
 ```
 matsubed-workspace\LED_blink> matsubed compile
@@ -118,7 +134,7 @@ Image: .\BUILD\LPC1549\GCC_ARM\LED_blink.bin
 ```
 最後にこんな感じのが出ればコンパイル成功
 
-### MATSU-bedへの書き込み
+### **4. MATSU-bedへの書き込み**
 MATSU-bedをUSB-ISPモードでPCに接続する
 
 書き込みたいプロジェクトの中でflashコマンドを実行
