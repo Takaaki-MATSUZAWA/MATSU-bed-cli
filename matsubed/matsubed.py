@@ -14,10 +14,17 @@ ver = "0.1.0"
 LIBRARY_DIR_PATH = "..\\library\\"
 MATSUBED_BLINK_URL = "https://developer.mbed.org/users/hardtail/code/MATSU-bed_blinky/"
 mbed_sdk_tools_url = 'https://mbed.org/users/mbed_official/code/mbed-sdk-tools'
+matsubed_sdk_url = "https://github.com/Takaaki-MATSUZAWA/matsubed-sdk"
 
 def mbed_sdk_deploy():
     os.system("mkdir .temp")
     os.system("hg clone "+ mbed_sdk_tools_url + " .temp\\tools")
+
+def matsubed_sdk_deploy(project_name = None):
+    if project_name is None:
+        os.system("git clone "+ matsubed_sdk_url + " .temp\\tools")
+    else:
+        os.system("git clone "+ matsubed_sdk_url + " " + project_name+ "\\.temp\\tools")
 
 def check_setting():
     if not os.path.exists(".mbed"):
@@ -128,6 +135,12 @@ def flash():
 def new(projectName):
     cmd = 'mbed new '
 
+    ## プロジェクトファイルを作る
+    os.mkdir(projectName)
+
+    ## 自前のSDKをインストール
+    matsubed_sdk_deploy(projectName)
+
     ## mbed os 2でプロジェクトを作る
     ## ライブラリはダウンロードせずにlibraryフォルダ内からシンボリックリンクを張る
     cmd = cmd + projectName +" --mbedlib --create-only"
@@ -139,8 +152,8 @@ def new(projectName):
     ## ツールチェインをGCC_ARMに設定
     check_setting()
 
-    os.system("mklink /D mbed ..\library\mbed")
-    os.system("mklink /D USBDevice ..\library\USBDevice")
+    #os.system("mklink /D mbed ..\library\mbed")
+    #os.system("mklink /D USBDevice ..\library\USBDevice")
 
     ## libraryフォルダからmain.cppをコピーしてくる
     shutil.copy(LIBRARY_DIR_PATH+"main.cpp", ".\\")
@@ -157,7 +170,7 @@ def add(url_or_libName):
         cmd = cmd + " add " + url_or_libName + " " + LIBRARY_DIR_PATH +libName
         os.system(cmd)
 
-        os.system("mklink /D " + libName + " " + LIBRARY_DIR_PATH + libName)
+        #os.system("mklink /D " + libName + " " + LIBRARY_DIR_PATH + libName)
 
         ## .libファイルをコピー
         shutil.copy(LIBRARY_DIR_PATH + libName+".lib","." )
@@ -171,7 +184,7 @@ def add(url_or_libName):
         ## 目的のライブラリがあったらシンボリックリンクを張る
         if libName in library_list:
             print "mbed library ["+libName +"] was imported from library Directory in workspace"
-            os.system("mklink /D " + libName + " " + LIBRARY_DIR_PATH + libName)
+            #os.system("mklink /D " + libName + " " + LIBRARY_DIR_PATH + libName)
             shutil.copy(LIBRARY_DIR_PATH + libName+".lib","." )
         else:
             print "mbed library ["+libName +"] is not found"
@@ -197,10 +210,10 @@ def project_import(URL,import_name = None):
     project_dir_path = os.getcwd()
 
     ## とりあえずmbedライブラリのリングを張る
-    os.system("mklink /D mbed ..\library\mbed")
+    #os.system("mklink /D mbed ..\library\mbed")
 
     ## mbed sdk 2.0をデプロイ
-    mbed_sdk_deploy()
+    matsubed_sdk_deploy()
 
 
     ## ライブラリを精査して無いものはlibraryディレクトリに落としてシンボリックリンクを張る
@@ -244,73 +257,79 @@ def main():
     for arg in args:
         cmd = cmd + " " + arg
 
-    ## サブコマンド flash
-    if args[0] == "flash":
-        flash()
-        sys.exit(0)
+        if len(args) != 0:
+                    
+            ## サブコマンド flash
+            if args[0] == "flash":
+                flash()
+                sys.exit(0)
 
-    ## サブコマンド init
-    if args[0] == "init":
-        init()
-        sys.exit(0)
+            ## サブコマンド init
+            if args[0] == "init":
+                init()
+                sys.exit(0)
 
-    ## サブコマンド new
-    if args[0] == "new":
-        if len(args) < 2:
-            print "usage: matsubed new project_name"
-            print ""
-            print "matsubed new: error: too few arguments"
-            sys.exit(1)
+            ## サブコマンド new
+            if args[0] == "new":
+                if len(args) < 2:
+                    print "usage: matsubed new project_name"
+                    print ""
+                    print "matsubed new: error: too few arguments"
+                    sys.exit(1)
 
-        new(args[1])
-        sys.exit(0)
+                new(args[1])
+                sys.exit(0)
 
-    ## サブコマンド　compile
-    if args[0] == "compile":
-        check_setting()
+            ## サブコマンド　compile
+            if args[0] == "compile":
+                check_setting()
+                #tools.make.main()
+                #mbed_compile.compile()
 
-    ## library-list
-    if args[0] == "library":
-        library_list =get_library_list()
+                #sys.exit(0)
 
-        print "List of libraries being downloaded"
+            ## library-list
+            if args[0] == "library":
+                library_list =get_library_list()
 
-        for x in library_list:
-            print "   " + x
+                print "List of libraries being downloaded"
 
-        sys.exit(0)
+                for x in library_list:
+                    print "   " + x
 
-    ## サブコマンド import 
-    if args[0] == "import":
-        if len(args) < 2:
-            print "usage: matsubed import URL [path]"
-            print ""
-            print "matsubed import: error: too few arguments"
-            sys.exit(1)
+                sys.exit(0)
 
-        if len(args) > 2:
-            project_import(args[1], args[2])
-        else:
-            project_import(args[1])
+            ## サブコマンド import 
+            if args[0] == "import":
+                if len(args) < 2:
+                    print "usage: matsubed import URL [path]"
+                    print ""
+                    print "matsubed import: error: too few arguments"
+                    sys.exit(1)
 
-        sys.exit(0)
+                if len(args) > 2:
+                    project_import(args[1], args[2])
+                else:
+                    project_import(args[1])
+
+                sys.exit(0)
 
 
-    ## サブコマンド add
-    ## ライブラリ追加用のコマンド
-    if args[0] == "add":
-        if len(args) < 2:
-            print "usage: matsubed add URL_or_LibraryName"
-            print ""
-            print "matsubed add: error: too few arguments"
-            sys.exit(1)
+            ## サブコマンド add
+            ## ライブラリ追加用のコマンド
+            if args[0] == "add":
+                if len(args) < 2:
+                    print "usage: matsubed add URL_or_LibraryName"
+                    print ""
+                    print "matsubed add: error: too few arguments"
+                    sys.exit(1)
 
-        add(args[1])
-        sys.exit(0)    
+                add(args[1])
+                sys.exit(0)    
 
-    if "--version" in args:
-        print ver
-        sys.exit(0)
+            if "--version" in args:
+                print ver
+                sys.exit(0)
 
     os.system(cmd)
     
