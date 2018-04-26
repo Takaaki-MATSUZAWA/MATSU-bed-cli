@@ -14,7 +14,7 @@ ver = "0.1.0"
 LIBRARY_DIR_PATH = "..\\library\\"
 MATSUBED_BLINK_URL = "https://developer.mbed.org/users/hardtail/code/MATSU-bed_blinky/"
 mbed_sdk_tools_url = 'https://mbed.org/users/mbed_official/code/mbed-sdk-tools'
-matsubed_sdk_url = "https://github.com/hardtail0112/matsubed-sdk"
+matsubed_sdk_url = "https://github.com/Takaaki-MATSUZAWA/matsubed-sdk"
 
 def mbed_sdk_deploy():
     os.system("mkdir .temp")
