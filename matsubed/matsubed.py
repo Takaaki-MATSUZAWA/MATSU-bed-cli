@@ -9,7 +9,7 @@ import sys
 import os
 from urlparse import urlparse
 
-ver = "0.1.0"
+ver = "0.2.0"
 
 LIBRARY_DIR_PATH = "..\\library\\"
 MATSUBED_BLINK_URL = "https://developer.mbed.org/users/hardtail/code/MATSU-bed_blinky/"
