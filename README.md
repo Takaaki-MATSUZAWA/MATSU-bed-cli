@@ -12,7 +12,7 @@ pipが入っていればMATSU-bed-cliを入れる時にmbed-cliも一緒に入�
 ## 本体のインストール
 コマンドプロンプトで
 ```
-> git clone https://github.com/hardtail0112/MATSU-bed-cli
+> git clone https://github.com/Takaaki-MATSUZAWA/MATSU-bed-cli
 
 > cd MATSU-bed-cli
 > python setup.py install
