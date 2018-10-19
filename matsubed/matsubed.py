@@ -9,7 +9,7 @@ import sys
 import os
 from urlparse import urlparse
 
-ver = "0.2.0"
+ver = "0.2.1"
 
 LIBRARY_DIR_PATH = "..\\library\\"
 MATSUBED_BLINK_URL = "https://developer.mbed.org/users/hardtail/code/MATSU-bed_blinky/"
@@ -99,11 +99,13 @@ def format():
         # .binだけが入ってるドライブを見つける
         # .binファイルが1つだけ入っていたらMATSU-bed
         # binfile = os.listdir(drive+":/")[0]
-        if (len(os.listdir(drive+":/"))==1) and (os.listdir(drive+":/")[0].split(".")[-1]=="bin"):
-            #print "Find MATSU-BED!!"
-            os.remove(drive+":/"+os.listdir(drive+":/")[0])
-            return True
-
+        try:
+            if (len(os.listdir(drive+":/"))==1) and (os.listdir(drive+":/")[0].split(".")[-1]=="bin"):
+                #print "Find MATSU-BED!!"
+                os.remove(drive+":/"+os.listdir(drive+":/")[0])
+                return True
+        except:
+            pass
     return False
             
 def write():
