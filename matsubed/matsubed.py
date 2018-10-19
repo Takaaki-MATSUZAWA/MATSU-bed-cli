@@ -114,10 +114,13 @@ def write():
     # フォーマット済みであることを確認
     # 何も入っていないドライブを探す
     for drive in get_drives():
-        if len(os.listdir(drive+":/"))==0:
-            if chack_binfile() is not None:
-                shutil.copy(chack_binfile(), drive+":/")
-                return True
+        try:
+            if len(os.listdir(drive+":/"))==0:
+                if chack_binfile() is not None:
+                    shutil.copy(chack_binfile(), drive+":/")
+                    return True
+        except:
+            pass
     print ".bin file is not found"
     return False
 
