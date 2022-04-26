@@ -7,9 +7,9 @@ import os
 import shutil
 import sys
 import os
-from urlparse import urlparse
+import urllib.parse
 
-ver = "0.2.1"
+ver = "0.3.0"
 
 LIBRARY_DIR_PATH = "..\\library\\"
 MATSUBED_BLINK_URL = "https://developer.mbed.org/users/hardtail/code/MATSU-bed_blinky/"
@@ -47,7 +47,7 @@ def check_setting():
 
 
 def isURL(url):
-    o = urlparse(url)
+    o = urllib.parse.urlparse(url)
     return len(o.scheme) > 0
 
 def get_library_list():
@@ -70,7 +70,7 @@ def get_library_list():
         if "BUILD" in library_list:
             library_list.remove("BUILD")
     else:
-        print "library directory not found"
+        print("library directory not found")
 
     return library_list
 
@@ -101,7 +101,7 @@ def format():
         # binfile = os.listdir(drive+":/")[0]
         try:
             if (len(os.listdir(drive+":/"))==1) and (os.listdir(drive+":/")[0].split(".")[-1]=="bin"):
-                #print "Find MATSU-BED!!"
+                #print("Find MATSU-BED!!")
                 os.remove(drive+":/"+os.listdir(drive+":/")[0])
                 return True
         except:
@@ -121,21 +121,21 @@ def write():
                     return True
         except:
             pass
-    print ".bin file is not found"
+    print(".bin file is not found")
     return False
 
 def flash():
     if chack_binfile() is None:
-        print '.bin file is not found'
+        print(".bin file is not found")
         return 0
 
     if format() == False:
-        print 'MATSU-bed is not found'
-        print 'Please connect MATSU-bed and enter USB-ISP mode'
+        print("MATSU-bed is not found")
+        print("Please connect MATSU-bed and enter USB-ISP mode")
         return 0
 
     if write() == True:
-        print 'Success firmware update !!!'
+        print("Success firmware update !!!")
 
 def new(projectName):
     cmd = 'mbed new '
@@ -188,13 +188,13 @@ def add(url_or_libName):
 
         ## 目的のライブラリがあったらシンボリックリンクを張る
         if libName in library_list:
-            print "mbed library ["+libName +"] was imported from library Directory in workspace"
+            print("mbed library [",libName ,"] was imported from library Directory in workspace")
             #os.system("mklink /D " + libName + " " + LIBRARY_DIR_PATH + libName)
             shutil.copy(LIBRARY_DIR_PATH + libName+".lib","." )
         else:
-            print "mbed library ["+libName +"] is not found"
-            print "Please import using web URL"
-            print "e.g.) matsubed import https://developer.mbed.org/users/hardtail/code/"+libName
+            print("mbed library [",libName,"] is not found")
+            print("Please import using web URL")
+            print("e.g.) matsubed import https://developer.mbed.org/users/hardtail/code/",libName)
 
 def project_import(URL,import_name = None):
     projectURL = URL
@@ -277,9 +277,9 @@ def main():
             ## サブコマンド new
             if args[0] == "new":
                 if len(args) < 2:
-                    print "usage: matsubed new project_name"
-                    print ""
-                    print "matsubed new: error: too few arguments"
+                    print("usage: matsubed new project_name")
+                    print("")
+                    print("matsubed new: error: too few arguments")
                     sys.exit(1)
 
                 new(args[1])
@@ -297,19 +297,19 @@ def main():
             if args[0] == "library":
                 library_list =get_library_list()
 
-                print "List of libraries being downloaded"
+                print("List of libraries being downloaded")
 
                 for x in library_list:
-                    print "   " + x
+                    print("   ",x)
 
                 sys.exit(0)
 
             ## サブコマンド import 
             if args[0] == "import":
                 if len(args) < 2:
-                    print "usage: matsubed import URL [path]"
-                    print ""
-                    print "matsubed import: error: too few arguments"
+                    print("usage: matsubed import URL [path]")
+                    print("")
+                    print("matsubed import: error: too few arguments")
                     sys.exit(1)
 
                 if len(args) > 2:
@@ -324,16 +324,16 @@ def main():
             ## ライブラリ追加用のコマンド
             if args[0] == "add":
                 if len(args) < 2:
-                    print "usage: matsubed add URL_or_LibraryName"
-                    print ""
-                    print "matsubed add: error: too few arguments"
+                    print("usage: matsubed add URL_or_LibraryName")
+                    print("")
+                    print("matsubed add: error: too few arguments")
                     sys.exit(1)
 
                 add(args[1])
                 sys.exit(0)    
 
             if "--version" in args:
-                print ver
+                print(ver)
                 sys.exit(0)
 
     os.system(cmd)

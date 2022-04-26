@@ -1,14 +1,25 @@
 # MATSU-bed-cli
 
 ## インストール方法
-### 前準備
-- Python のインストール: https://www.python.org/downloads/
+### mbed-cliのインストール
+#### windowsの場合
+(mbed-cli-windows-install)[https://github.com/ARMmbed/mbed-cli-windows-install]
+
+公式のインストーラでpython2.7も含めて依存関係もいい感じにしてくれる
+
+すでにmbed-cliをインストール済みでpython3との関係で依存関係などが色々壊れた場合は`pip uninstall mbed-cli`を実行してから上記のインストーラを実行するればいい感じにしてくれる
+
+python3の対応は…
+
+#### windows以外の環境
+- Python2.7 のインストール: https://www.python.org/downloads/
 - Git のインストール: https://git-scm.com/download
 - Mercurial のインストール: https://www.mercurial-scm.org/
 - GCC のインストール: https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update
 - mbed-cliのinstall:`pip install mbed-cli`
 
-pipが入っていればMATSU-bed-cliを入れる時にmbed-cliも一緒に入るはず
+mbed-cliはpython2.7を使うので環境に合わせていい感じする
+
 ## 本体のインストール
 コマンドプロンプトで
 ```
